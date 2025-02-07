@@ -1,0 +1,9 @@
+server:
+  port: 55
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848  # 确保这里有一个空格
+        username: nacos              # 用户名
+        password: nacos              # 密码

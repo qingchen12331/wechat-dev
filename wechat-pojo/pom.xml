@@ -10,7 +10,13 @@
     </parent>
 
     <artifactId>wechat-pojo</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.qingchen</groupId>
+            <artifactId>wechat-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

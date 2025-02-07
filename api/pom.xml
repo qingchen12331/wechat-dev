@@ -13,9 +13,15 @@
     <packaging>pom</packaging>
     <modules>
         <module>auth-service-88</module>
-        <module>main-service-77</module>
         <module>file-service-55</module>
+        <module>main-service-66</module>
     </modules>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.qingchen</groupId>
+            <artifactId>wechat-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
