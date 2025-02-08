@@ -1,0 +1,38 @@
+server:
+  port: 1000
+spring:
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 5379
+      database: 0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: authRoute
+          uri: lb://auth-service #lb=负载均衡
+          predicates:
+            - Path=/auth/**,/**
+        - id: fileRoute
+          uri: lb://file-service
+          predicates:
+            - Path=/file/**
+        - id : mainRoute
+          uri: lb://main-service
+          predicates:
+            - Path=/main/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            allowCredentials: true
