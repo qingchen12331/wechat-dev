@@ -1,6 +1,11 @@
 server:
   port: 88
 spring:
+  data:
+      redis:
+        host: 127.0.0.1
+        port: 5379
+        database: 0
   cloud:
     nacos:
       discovery:
