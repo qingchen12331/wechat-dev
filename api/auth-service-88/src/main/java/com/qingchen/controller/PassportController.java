@@ -3,6 +3,7 @@ package com.qingchen.controller;
 
 import com.qingchen.grace.result.GraceJSONResult;
 import com.qingchen.tasks.SMSTask;
+import com.qingchen.utils.IPUtil;
 import com.qingchen.utils.MyInfo;
 import com.qingchen.utils.RedisOperator;
 import jakarta.annotation.Resource;
@@ -31,8 +32,12 @@ public class PassportController {
         if(StringUtils.isBlank(mobile)){
             return GraceJSONResult.error();
         }
+        //获得用户的手机号/ip
+        String userIp=IPUtil.getRequestIp(request);
+        //限制该用户的手机号/ip在60秒内只能获得一次验证码
+        redis.setnx60s(MOBILE_SMSCODE+":"+userIp,mobile);
         String code =(int)((Math.random()*9+1)*100000)+"";
-//        String code="8111";
+
         smsTask.sendSMSInTask(MyInfo.getMobile(),code);
         //把验证码存入redis中,用于后续的注册和登录
         redis.set(MOBILE_SMSCODE+":"+mobile,code,30*60);
