@@ -26,6 +26,6 @@ public class TestLimtFilter extends BaseInfoProperties implements GlobalFilter, 
     @Override
     public int getOrder() {
 
-        return 0;
+        return 10;
     }
 }
