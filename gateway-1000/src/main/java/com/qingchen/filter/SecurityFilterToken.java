@@ -32,12 +32,21 @@ public class SecurityFilterToken extends BaseInfoProperties implements GlobalFil
         log.info("SecurityFilterToken url={}",url);
         //2.获得所有的徐永涛排除校验的url list
         List<String> excludeList=excludeUrlProperties.getUrls();
+        //3.1校验并且排除excludeList
         if(excludeList!=null&&!excludeList.isEmpty()){
             for(String excludeUrl:excludeList){
                 if(antPathMatcher.matchStart(excludeUrl,url)){
                     //如果匹配到,则直接放行,表示当前的URL是不需要被拦截校验的
                     return chain.filter(exchange);
                 }
+            }
+        }
+        //3.2排除静态资源服务static
+        String fileStart = excludeUrlProperties.getFileStart();
+        if(StringUtils.isNotBlank(fileStart)){
+            boolean matchFileStart=antPathMatcher.matchStart(fileStart,url);
+            if(matchFileStart){
+                return chain.filter(exchange);
             }
         }
         //4.代码到达此处,表示请求被拦截,需要进行校验
