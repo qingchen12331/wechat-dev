@@ -53,6 +53,22 @@ public class UserController extends BaseInfoProperties {
         usersService.modifyUserInfo(userBO);
         return GraceJSONResult.ok(getUserInfo(userId,true));
     }
+    @PostMapping("updateFriendCircleBg")
+    public GraceJSONResult updateFriendCircleBg(@RequestParam("userId") String userId,@RequestParam("friendCircleBg") String friendCircleBg){
+        ModifyUserBO userBO=new ModifyUserBO();
+        userBO.setUserId(userId);
+        userBO.setFriendCircleBg(friendCircleBg);
+        usersService.modifyUserInfo(userBO);
+        return GraceJSONResult.ok(getUserInfo(userId,true));
+    }
+    @PostMapping("updateChatBg")
+    public GraceJSONResult updateChatBg(@RequestParam("userId") String userId,@RequestParam("chatBg") String chatBg){
+        ModifyUserBO userBO=new ModifyUserBO();
+        userBO.setUserId(userId);
+        userBO.setFriendCircleBg(chatBg);
+        usersService.modifyUserInfo(userBO);
+        return GraceJSONResult.ok(getUserInfo(userId,true));
+    }
 
 
 }

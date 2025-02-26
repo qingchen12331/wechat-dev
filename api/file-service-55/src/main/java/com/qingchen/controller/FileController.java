@@ -89,5 +89,82 @@ public class FileController {
 
         return null;
     }
+    @PostMapping("uploadFriendCircleBg")
+    public GraceJSONResult uploadFriendCircleBg(@RequestParam("file")MultipartFile file,
+                                      String userId) throws Exception {
+
+        if(StringUtils.isBlank(userId)){
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
+
+        }
+
+        String filename=file.getOriginalFilename();
+        if(StringUtils.isBlank(filename)){
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
+        }
+        filename="friendCircleBg:"+"/"+userId+"/"+dealWithFilename(filename);
+       String imageUrl =MinIOUtils.uploadFile(MinIOConfig.getBucketName(),filename,file.getInputStream(),true);
+//        String faceUrl=MinIOConfig.getFileHost()+"/"+MinIOConfig.getBucketName()+"/"+filename;
+        /**
+         * 微服务远程调用更新用户头像
+         * 如果前端没有保存按钮可以这么做,如果有保存提交按钮,则在前端可以触发
+         *
+         */
+        GraceJSONResult jsonResult = userInfoMicroServiceFeign.updateFriendCircleBg(userId, imageUrl);
+        Object data = jsonResult.getData();
+        String json= JsonUtils.objectToJson(data);
+        UsersVO usersVO = JsonUtils.jsonToPojo(json, UsersVO.class);
+        return GraceJSONResult.ok(usersVO);
+    }
+
+    @PostMapping("uploadChatBg")
+    public GraceJSONResult uploadChatBg(@RequestParam("file")MultipartFile file,
+                                                 String userId) throws Exception {
+
+        if(StringUtils.isBlank(userId)){
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
+
+        }
+
+        String filename=file.getOriginalFilename();
+        if(StringUtils.isBlank(filename)){
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
+        }
+        filename="chatBg:"+"/"+userId+"/"+dealWithFilename(filename);
+        String imageUrl =MinIOUtils.uploadFile(MinIOConfig.getBucketName(),filename,file.getInputStream(),true);
+//        String faceUrl=MinIOConfig.getFileHost()+"/"+MinIOConfig.getBucketName()+"/"+filename;
+        /**
+         * 微服务远程调用更新用户头像
+         * 如果前端没有保存按钮可以这么做,如果有保存提交按钮,则在前端可以触发
+         *
+         */
+        GraceJSONResult jsonResult = userInfoMicroServiceFeign.updateFriendCircleBg(userId, imageUrl);
+        Object data = jsonResult.getData();
+        String json= JsonUtils.objectToJson(data);
+        UsersVO usersVO = JsonUtils.jsonToPojo(json, UsersVO.class);
+        return GraceJSONResult.ok(usersVO);
+    }
+
+
+
+
+
+
+ //设置文件名
+    private String dealWithFilename(String filename){
+     String suffixName=filename.substring(filename.lastIndexOf("."));
+     String fName=filename.substring(0,filename.lastIndexOf("."));
+     String uuid=UUID.randomUUID().toString();
+     return fName+"-"+uuid+suffixName;
+    }
+    private String dealWithoutFilename(String filename){
+    String suffixName=filename.substring(filename.lastIndexOf("."));
+    String uuid=UUID.randomUUID().toString();
+    return uuid+suffixName;
+    }
+
+
+
+
 
 }
