@@ -24,6 +24,7 @@ import java.util.List;
 public class SecurityFilterToken extends BaseInfoProperties implements GlobalFilter, Ordered {
     @Resource
     private ExcludeUrlProperties excludeUrlProperties;
+    //路径匹配规则器
     private AntPathMatcher antPathMatcher=new AntPathMatcher();
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

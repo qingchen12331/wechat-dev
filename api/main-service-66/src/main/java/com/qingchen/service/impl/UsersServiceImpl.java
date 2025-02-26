@@ -50,7 +50,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
         }
         if(StringUtils.isNotBlank(wechatNum)){
+            //判断微信号是否已经修改
             String isExit=redis.get(REDIS_USER_ALREADY_UPDATE_WECHAT_NUM+":"+userID);
+            //如果今年已经修改了返回WECHAT_NUM_ALREADY_MODIFIED_ERROR
             if(StringUtils.isNotBlank(isExit))
                 GraceException.display(ResponseStatusEnum.WECHAT_NUM_ALREADY_MODIFIED_ERROR);
         }
@@ -58,6 +60,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         pendingUser.setUpdatedTime(LocalDateTime.now());
         BeanUtils.copyProperties(userBO,pendingUser);
         usersMapper.updateById(pendingUser);
+        //今年第一次修改微信号
         if(StringUtils.isNotBlank(wechatNum)){
             redis.setByDays(REDIS_USER_ALREADY_UPDATE_WECHAT_NUM+":"+userID,userID,365);
         }

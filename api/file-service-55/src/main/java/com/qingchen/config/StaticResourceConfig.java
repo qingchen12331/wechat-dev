@@ -1,4 +1,4 @@
-package com.qingchen;
+package com.qingchen.config;
 
 
 import org.springframework.context.annotation.Configuration;

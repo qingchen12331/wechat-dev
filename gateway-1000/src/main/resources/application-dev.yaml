@@ -15,7 +15,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: true #动态路由,从注册中心根据微服务的名称获得目标节点的地址
       routes:
         - id: authRoute
           uri: lb://auth-service #lb=负载均衡
