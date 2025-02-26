@@ -2,6 +2,7 @@ package com.qingchen.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qingchen.api.feign.FileMicroServiceFeign;
 import com.qingchen.enums.Sex;
 import com.qingchen.mapper.UsersMapper;
 import com.qingchen.pojo.Users;
@@ -52,7 +53,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         user.setCreatedTime(LocalDateTime.now());
         user.setUpdatedTime(LocalDateTime.now());
         //TODO
-        user.setWechatNumImg("123");
+//        user.setWechatNumImg("123");
+        user.setWechatNumImg(getQrCodeUrl(wechatNum,"temp"));
 //        user.setNickname("qingchen");
         if(nickname==null||nickname==""){
             user.setNickname(DesensitizationUtil.commonDisplay(mobile));
@@ -70,5 +72,16 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public Users queryMobileIfExist(String mobile) {
 
         return usersMapper.selectOne(new QueryWrapper<Users>().eq("mobile",mobile));
+    }
+    @Autowired
+    private FileMicroServiceFeign fileMicroServiceFeign;
+    private String getQrCodeUrl(String wechatNumber,String userId)  {
+        try{
+            return fileMicroServiceFeign.generateQrCode(wechatNumber,userId);
+        }catch (Exception e){
+//        throw new RuntimeException(e);
+        }
+        return null;
+
     }
 }

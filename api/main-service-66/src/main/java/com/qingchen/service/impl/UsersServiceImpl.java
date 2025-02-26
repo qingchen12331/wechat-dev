@@ -2,6 +2,7 @@ package com.qingchen.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qingchen.api.feign.FileMicroServiceFeign;
 import com.qingchen.enums.Sex;
 import com.qingchen.exceptions.GraceException;
 import com.qingchen.grace.result.GraceJSONResult;
@@ -40,6 +41,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     private RedisOperator redis;
 
 
+
     @Override
     public void modifyUserInfo(ModifyUserBO userBO) {
         String wechatNum=userBO.getWechatNum();
@@ -55,6 +57,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             //如果今年已经修改了返回WECHAT_NUM_ALREADY_MODIFIED_ERROR
             if(StringUtils.isNotBlank(isExit))
                 GraceException.display(ResponseStatusEnum.WECHAT_NUM_ALREADY_MODIFIED_ERROR);
+            else{
+                //修改微信二维码
+                String wechatNumUrl=getQrCodeUrl(wechatNum,userID);
+                pendingUser.setWechatNumImg(wechatNumUrl);
+            }
         }
         pendingUser.setId(userID);
         pendingUser.setUpdatedTime(LocalDateTime.now());
@@ -65,6 +72,17 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             redis.setByDays(REDIS_USER_ALREADY_UPDATE_WECHAT_NUM+":"+userID,userID,365);
         }
 
+
+    }
+    @Autowired
+    private FileMicroServiceFeign fileMicroServiceFeign;
+    private String getQrCodeUrl(String wechatNumber,String userId)  {
+        try{
+            return fileMicroServiceFeign.generateQrCode(wechatNumber,userId);
+        }catch (Exception e){
+//        throw new RuntimeException(e);
+        }
+        return null;
 
     }
 }

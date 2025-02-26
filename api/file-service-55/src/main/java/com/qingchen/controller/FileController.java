@@ -73,7 +73,7 @@ public class FileController {
     }
 
     @PostMapping("generatQrCode")
-    public GraceJSONResult generateQrCode(String wechatNumber,
+    public String generateQrCode(String wechatNumber,
                                       String userId, HttpServletRequest request) throws Exception {
         Map<String,String>map=new HashMap<>();
         map.put("wechatNumber",wechatNumber);
@@ -84,7 +84,7 @@ public class FileController {
             String uuid= UUID.randomUUID().toString();
             String objectname="wechatNumber"+File.separator+userId+File.separator+uuid+".png";
             String imageQrCodeUrl = MinIOUtils.uploadFile(MinIOConfig.getBucketName(), objectname, qrCodeUrl, true);
-            return GraceJSONResult.ok(imageQrCodeUrl);
+            return imageQrCodeUrl;
         }
 
         return null;
