@@ -57,7 +57,7 @@ public class FileController {
         if(StringUtils.isBlank(filename)){
             return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
         }
-        filename="face:"+File.separator+userId+File.separator+filename;
+        filename="face:"+"/"+userId+"/"+filename;
         MinIOUtils.uploadFile(MinIOConfig.getBucketName(),filename,file.getInputStream());
         String faceUrl=MinIOConfig.getFileHost()+"/"+MinIOConfig.getBucketName()+"/"+filename;
         /**
@@ -82,7 +82,7 @@ public class FileController {
         String qrCodeUrl= QrCodeUtils.generateQRCode(data);
         if (!StringUtils.isBlank(qrCodeUrl)){
             String uuid= UUID.randomUUID().toString();
-            String objectname="wechatNumber"+File.separator+userId+File.separator+uuid+".png";
+            String objectname="wechatNumber"+"/"+userId+"/"+uuid+".png";
             String imageQrCodeUrl = MinIOUtils.uploadFile(MinIOConfig.getBucketName(), objectname, qrCodeUrl, true);
             return imageQrCodeUrl;
         }
