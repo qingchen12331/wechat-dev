@@ -32,5 +32,10 @@ public class FriendRequestController {
         PagedGridResult result = friendRequestService.queryNewFriendList(userId, page, pageSize);
         return GraceJSONResult.ok(result);
     }
+    @PostMapping("pass")
+    public GraceJSONResult pass(String friendRequestId,String friendRemark){
+        friendRequestService.passNewFriend(friendRequestId,friendRemark);
+        return GraceJSONResult.ok();
+    }
 
 }
