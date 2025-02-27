@@ -138,7 +138,7 @@ public class FileController {
          * 如果前端没有保存按钮可以这么做,如果有保存提交按钮,则在前端可以触发
          *
          */
-        GraceJSONResult jsonResult = userInfoMicroServiceFeign.updateFriendCircleBg(userId, imageUrl);
+        GraceJSONResult jsonResult = userInfoMicroServiceFeign.updateChatBg(userId, imageUrl);
         Object data = jsonResult.getData();
         String json= JsonUtils.objectToJson(data);
         UsersVO usersVO = JsonUtils.jsonToPojo(json, UsersVO.class);

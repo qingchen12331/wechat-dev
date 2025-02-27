@@ -1,12 +1,15 @@
 package com.qingchen.controller;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.qingchen.base.BaseInfoProperties;
 import com.qingchen.grace.result.GraceJSONResult;
+import com.qingchen.grace.result.ResponseStatusEnum;
 import com.qingchen.pojo.Users;
 import com.qingchen.pojo.bo.ModifyUserBO;
 import com.qingchen.pojo.vo.UsersVO;
 import com.qingchen.service.IUsersService;
 import com.qingchen.service.impl.UsersServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -65,9 +68,27 @@ public class UserController extends BaseInfoProperties {
     public GraceJSONResult updateChatBg(@RequestParam("userId") String userId,@RequestParam("chatBg") String chatBg){
         ModifyUserBO userBO=new ModifyUserBO();
         userBO.setUserId(userId);
-        userBO.setFriendCircleBg(chatBg);
+        userBO.setChatBg(chatBg);
         usersService.modifyUserInfo(userBO);
         return GraceJSONResult.ok(getUserInfo(userId,true));
+    }
+    @PostMapping("queryFriend")
+    public GraceJSONResult queryFriend(String queryString ,HttpServletRequest request){
+    if(StringUtils.isBlank(queryString))
+    {
+        return GraceJSONResult.error();
+    }
+        Users friend = usersService.getByWechatNumOrMobile(queryString);
+    if(friend==null)
+    {
+        return GraceJSONResult.errorCustom(ResponseStatusEnum.FRIEND_NOT_EXIST_ERROR);
+    }
+    String myId=request.getHeader(HEADER_USER_ID);
+    if(friend.getId().equals(myId)){
+        return GraceJSONResult.errorCustom(ResponseStatusEnum.CAN_NOT_ADD_SELF_FRIEND_ERROR);
+    }
+    return GraceJSONResult.ok(friend);
+
     }
 
 

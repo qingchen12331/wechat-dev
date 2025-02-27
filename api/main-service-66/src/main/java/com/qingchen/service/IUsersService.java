@@ -14,4 +14,5 @@ import com.qingchen.pojo.bo.ModifyUserBO;
  */
 public interface IUsersService extends IService<Users> {
     public void modifyUserInfo(ModifyUserBO userBO);
+    public Users getByWechatNumOrMobile(String queryString);
 }

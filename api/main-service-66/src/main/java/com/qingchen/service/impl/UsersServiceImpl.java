@@ -74,6 +74,22 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
 
     }
+
+    /**
+     * 根据微信号或者手机号精准匹配
+     * @param queryString
+     * @return
+     */
+    @Override
+    public Users getByWechatNumOrMobile(String queryString) {
+        QueryWrapper queryWrapper=new QueryWrapper<Users>()
+                .eq("wechat_num",queryString)
+                .or()
+                .eq("mobile",queryString);
+        Users friend = usersMapper.selectOne(queryWrapper);
+        return friend;
+    }
+
     @Autowired
     private FileMicroServiceFeign fileMicroServiceFeign;
     private String getQrCodeUrl(String wechatNumber,String userId)  {
@@ -85,4 +101,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         return null;
 
     }
+
+
+
+
 }

@@ -28,7 +28,7 @@ spring:
         - id : mainRoute
           uri: lb://main-service
           predicates:
-            - Path=/main/**,/userinfo/**
+            - Path=/main/**,/userinfo/**,/friendRequest/**
       globalcors:
         cors-configurations:
           '[/**]':
