@@ -2,6 +2,7 @@ package com.qingchen.controller;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.qingchen.base.BaseInfoProperties;
+import com.qingchen.enums.YesOrNo;
 import com.qingchen.grace.result.GraceJSONResult;
 import com.qingchen.service.FriendShipService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,24 @@ public class FriendShipController extends BaseInfoProperties {
         }
         String myId=request.getHeader(HEADER_USER_ID);
         friendShipService.updateFriendRemark(myId,friendId,friendRemark);
+        return GraceJSONResult.ok();
+    }
+    @PostMapping("tobeBlack")
+    public GraceJSONResult tobeBlack(HttpServletRequest request,String friendId){
+        if(StringUtils.isBlank(friendId)){
+            return GraceJSONResult.error();
+        }
+        String myId=request.getHeader(HEADER_USER_ID);
+        friendShipService.updateBlackList(myId,friendId,YesOrNo.YES);
+        return GraceJSONResult.ok();
+    }
+    @PostMapping("moveOutBlack")
+    public GraceJSONResult moveOutBlack(HttpServletRequest request,String friendId){
+        if(StringUtils.isBlank(friendId)){
+            return GraceJSONResult.error();
+        }
+        String myId=request.getHeader(HEADER_USER_ID);
+        friendShipService.updateBlackList(myId,friendId, YesOrNo.NO);
         return GraceJSONResult.ok();
     }
 

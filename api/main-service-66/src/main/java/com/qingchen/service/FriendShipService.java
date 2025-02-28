@@ -1,6 +1,7 @@
 package com.qingchen.service;
 
 import com.qingchen.controller.FriendShipController;
+import com.qingchen.enums.YesOrNo;
 import com.qingchen.pojo.Friendship;
 import com.qingchen.pojo.bo.NewFriendRequestBO;
 import com.qingchen.pojo.vo.ContactsVO;
@@ -34,4 +35,6 @@ public interface FriendShipService {
      * @param friendRemark
      */
     public void updateFriendRemark(String myId, String friendId, String friendRemark);
+
+    void updateBlackList(String myId, String friendId, YesOrNo yesOrNo);
 }

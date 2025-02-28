@@ -2,6 +2,7 @@ package com.qingchen.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qingchen.base.BaseInfoProperties;
+import com.qingchen.enums.YesOrNo;
 import com.qingchen.mapper.FriendshipMapper;
 import com.qingchen.mapper.FriendshipMapperCustom;
 import com.qingchen.pojo.FriendRequest;
@@ -49,5 +50,16 @@ private FriendshipMapperCustom friendshipMapperCustom;
         friendship.setUpdatedTime(LocalDateTime.now());
         friendshipMapper.update(friendship,updateWrapper);
 
+    }
+
+    @Override
+    public void updateBlackList(String myId, String friendId, YesOrNo yesOrNo) {
+    QueryWrapper updateWrapper=new QueryWrapper<Friendship>()
+            .eq("my_id",myId)
+            .eq("friend_id",friendId);
+    Friendship friendship=new Friendship();
+    friendship.setIsBlack(yesOrNo.type);
+    friendship.setUpdatedTime(LocalDateTime.now());
+    friendshipMapper.update(friendship,updateWrapper);
     }
 }
