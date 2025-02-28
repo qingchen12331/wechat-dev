@@ -12,6 +12,7 @@ import com.qingchen.service.FriendShipService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class FriendShipServiceImpl extends BaseInfoProperties implements FriendS
 private FriendshipMapper friendshipMapper;
 @Autowired
 private FriendshipMapperCustom friendshipMapperCustom;
-
+    @Transactional
     @Override
     public Friendship getFriendShip(String myId, String friendId) {
         QueryWrapper queryWrapper=new QueryWrapper<FriendRequest>().eq("my_id",myId)
@@ -33,7 +34,7 @@ private FriendshipMapperCustom friendshipMapperCustom;
 
         return friendshipMapper.selectOne(queryWrapper);
     }
-
+    @Transactional
     @Override
     public List<ContactsVO> queryMyFriends(String myId,boolean needBlack) {
         Map<String,Object>map=new HashMap<>();
@@ -41,7 +42,7 @@ private FriendshipMapperCustom friendshipMapperCustom;
         map.put("needBlack",needBlack);
         return friendshipMapperCustom.queryMyFriends(map);
     }
-
+    @Transactional
     @Override
     public void updateFriendRemark(String myId, String friendId, String friendRemark) {
         QueryWrapper<Friendship>updateWrapper=new QueryWrapper<>();
@@ -52,7 +53,7 @@ private FriendshipMapperCustom friendshipMapperCustom;
         friendshipMapper.update(friendship,updateWrapper);
 
     }
-
+    @Transactional
     @Override
     public void updateBlackList(String myId, String friendId, YesOrNo yesOrNo) {
     QueryWrapper updateWrapper=new QueryWrapper<Friendship>()
@@ -62,5 +63,17 @@ private FriendshipMapperCustom friendshipMapperCustom;
     friendship.setIsBlack(yesOrNo.type);
     friendship.setUpdatedTime(LocalDateTime.now());
     friendshipMapper.update(friendship,updateWrapper);
+    }
+    @Transactional
+    @Override
+    public void delete(String myId, String friendId) {
+        QueryWrapper delelteWrapper=new QueryWrapper<Friendship>()
+                .eq("my_id",myId)
+                .eq("friend_id",friendId);
+        friendshipMapper.delete(delelteWrapper);
+        QueryWrapper delelteWrapper2=new QueryWrapper<Friendship>()
+                .eq("my_id",friendId)
+                .eq("friend_id",myId);
+        friendshipMapper.delete(delelteWrapper2);
     }
 }

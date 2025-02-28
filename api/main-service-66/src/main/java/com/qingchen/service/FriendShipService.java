@@ -37,4 +37,6 @@ public interface FriendShipService {
     public void updateFriendRemark(String myId, String friendId, String friendRemark);
 
     void updateBlackList(String myId, String friendId, YesOrNo yesOrNo);
+
+    void delete(String myId, String friendId);
 }
