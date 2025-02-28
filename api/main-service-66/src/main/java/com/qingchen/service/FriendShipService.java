@@ -3,7 +3,10 @@ package com.qingchen.service;
 import com.qingchen.controller.FriendShipController;
 import com.qingchen.pojo.Friendship;
 import com.qingchen.pojo.bo.NewFriendRequestBO;
+import com.qingchen.pojo.vo.ContactsVO;
 import com.qingchen.utils.PagedGridResult;
+
+import java.util.List;
 
 /**
  * 好友请求服务类
@@ -16,4 +19,5 @@ public interface FriendShipService {
      * @return
      */
     public Friendship getFriendShip(String myId,String friendId);
+    public List<ContactsVO> queryMyFriends(String myId);
 }

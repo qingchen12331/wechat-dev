@@ -22,6 +22,11 @@ public class FriendShipController extends BaseInfoProperties {
         return GraceJSONResult.ok(friendShipService.getFriendShip(myId,friendId));
 
     }
+    @PostMapping("queryMyFriends")
+    public GraceJSONResult queryMyFriends(HttpServletRequest request){
+        String myId=request.getHeader(HEADER_USER_ID);
+        return GraceJSONResult.ok(friendShipService.queryMyFriends(myId));
+    }
 
 
 }
