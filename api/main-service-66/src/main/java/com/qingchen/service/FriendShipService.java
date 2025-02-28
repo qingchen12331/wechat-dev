@@ -19,5 +19,19 @@ public interface FriendShipService {
      * @return
      */
     public Friendship getFriendShip(String myId,String friendId);
+
+    /**
+     * 查询好友列表
+     * @param myId
+     * @return
+     */
     public List<ContactsVO> queryMyFriends(String myId);
+
+    /**
+     * 修改好友备注名
+     * @param myId
+     * @param friendId
+     * @param friendRemark
+     */
+    public void updateFriendRemark(String myId, String friendId, String friendRemark);
 }

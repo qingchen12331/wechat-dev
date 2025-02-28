@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,5 +38,16 @@ private FriendshipMapperCustom friendshipMapperCustom;
         Map<String,Object>map=new HashMap<>();
         map.put("myId",myId);
         return friendshipMapperCustom.queryMyFriends(map);
+    }
+
+    @Override
+    public void updateFriendRemark(String myId, String friendId, String friendRemark) {
+        QueryWrapper<Friendship>updateWrapper=new QueryWrapper<>();
+        updateWrapper.eq("my_id",myId).eq("friend_id",friendId);
+        Friendship friendship=new Friendship();
+        friendship.setFriendRemark(friendRemark);
+        friendship.setUpdatedTime(LocalDateTime.now());
+        friendshipMapper.update(friendship,updateWrapper);
+
     }
 }

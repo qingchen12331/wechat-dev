@@ -1,5 +1,6 @@
 package com.qingchen.controller;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.qingchen.base.BaseInfoProperties;
 import com.qingchen.grace.result.GraceJSONResult;
 import com.qingchen.service.FriendShipService;
@@ -26,6 +27,15 @@ public class FriendShipController extends BaseInfoProperties {
     public GraceJSONResult queryMyFriends(HttpServletRequest request){
         String myId=request.getHeader(HEADER_USER_ID);
         return GraceJSONResult.ok(friendShipService.queryMyFriends(myId));
+    }
+    @PostMapping("updateFriendRemark")
+    public GraceJSONResult updateFriendRemark(String friendId,String friendRemark,HttpServletRequest request){
+        if(StringUtils.isBlank(friendId)||StringUtils.isBlank(friendRemark)){
+            return GraceJSONResult.error();
+        }
+        String myId=request.getHeader(HEADER_USER_ID);
+        friendShipService.updateFriendRemark(myId,friendId,friendRemark);
+        return GraceJSONResult.ok();
     }
 
 
