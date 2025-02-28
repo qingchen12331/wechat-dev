@@ -26,7 +26,7 @@ public interface FriendShipService {
      * @param myId
      * @return
      */
-    public List<ContactsVO> queryMyFriends(String myId);
+    public List<ContactsVO> queryMyFriends(String myId,boolean needBlack);
 
     /**
      * 修改好友备注名

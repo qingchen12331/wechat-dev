@@ -35,9 +35,10 @@ private FriendshipMapperCustom friendshipMapperCustom;
     }
 
     @Override
-    public List<ContactsVO> queryMyFriends(String myId) {
+    public List<ContactsVO> queryMyFriends(String myId,boolean needBlack) {
         Map<String,Object>map=new HashMap<>();
         map.put("myId",myId);
+        map.put("needBlack",needBlack);
         return friendshipMapperCustom.queryMyFriends(map);
     }
 
