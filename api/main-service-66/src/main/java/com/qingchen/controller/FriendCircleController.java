@@ -2,13 +2,17 @@ package com.qingchen.controller;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.qingchen.grace.result.GraceJSONResult;
+import com.qingchen.pojo.FriendCircleLiked;
 import com.qingchen.pojo.bo.FriendCircleBO;
+import com.qingchen.pojo.vo.FriendCircleVO;
 import com.qingchen.service.FriendCircleService;
+import com.qingchen.utils.PagedGridResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.qingchen.base.BaseInfoProperties.HEADER_USER_ID;
 
@@ -32,7 +36,14 @@ public class FriendCircleController {
         if(StringUtils.isBlank(userId)){
             return GraceJSONResult.error();
         }
-        return GraceJSONResult.ok(friendCircleService.queryList(userId,page,pageSize));
+        PagedGridResult gridResult = friendCircleService.queryList(userId, page, pageSize);
+        List<FriendCircleVO>list=(List<FriendCircleVO>)gridResult.getRows();
+        for (FriendCircleVO f:list){
+            String friendCircleId = f.getFriendCircleId();
+            List<FriendCircleLiked> likedList=friendCircleService.queryLikedFriends(friendCircleId);
+            f.setLikedFriends(likedList);
+        }
+        return GraceJSONResult.ok(gridResult);
     }
     @PostMapping("like")
     public GraceJSONResult like(String friendCircleId,HttpServletRequest request){

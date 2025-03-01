@@ -89,6 +89,14 @@ public class FriendCircleServiceImpl extends BaseInfoProperties implements Frien
         redis.del(REDIS_DOES_USER_LIKE_FRIEND_CIRCLE+":"+friendCiircleId+":"+userId);
 
     }
+
+    @Override
+    public List<FriendCircleLiked> queryLikedFriends(String friendCircleId) {
+        QueryWrapper queryWrapper = new QueryWrapper<FriendCircleLiked>()
+                .eq("friend_circle_id",friendCircleId);
+        return friendCircleLikedMapper.selectList(queryWrapper);
+    }
+
     private FriendCircle selectFriendCircle(String friendCircleId){
         FriendCircle friendCircle = friendCircleMapper.selectById(friendCircleId);
         if (friendCircle == null){

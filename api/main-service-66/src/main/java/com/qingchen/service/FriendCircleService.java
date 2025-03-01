@@ -1,6 +1,7 @@
 package com.qingchen.service;
 
 import com.qingchen.enums.YesOrNo;
+import com.qingchen.pojo.FriendCircleLiked;
 import com.qingchen.pojo.Friendship;
 import com.qingchen.pojo.bo.FriendCircleBO;
 import com.qingchen.pojo.vo.ContactsVO;
@@ -36,4 +37,11 @@ public interface FriendCircleService {
      * @param userId
      */
     public void unlike(String friendCiircleId,String userId);
+
+    /**
+     * 查询朋友圈的点赞列表
+     * @param friendCircleId
+     * @return
+     */
+    public List<FriendCircleLiked> queryLikedFriends(String friendCircleId);
 }
