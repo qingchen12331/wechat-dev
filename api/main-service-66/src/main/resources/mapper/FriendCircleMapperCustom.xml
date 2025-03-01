@@ -20,7 +20,13 @@
             fc.user_id = u.id
         where
             fc.user_id = #{paramMap.userId}
+        or
+            u.id in(
+                select u.id as myFriendId from friendship fs left join users u on fs.friend_id=u.id
+                            where fs.my_id=#{paramMap.userId} and fs.is_black=0
+                )
         order by
             fc.publish_time
+        desc
     </select>
 </mapper>

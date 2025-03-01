@@ -23,4 +23,17 @@ public interface FriendCircleService {
      * @return
      */
     public PagedGridResult queryList(String userId, Integer page, Integer pageSize);
+
+    /**
+     * 点赞朋友圈
+     * @param friendCiircleId
+     * @param userId
+     */
+    public void like(String friendCiircleId,String userId);
+    /**
+     * 取消点赞朋友圈
+     * @param friendCiircleId
+     * @param userId
+     */
+    public void unlike(String friendCiircleId,String userId);
 }
