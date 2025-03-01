@@ -44,4 +44,12 @@ public interface FriendCircleService {
      * @return
      */
     public List<FriendCircleLiked> queryLikedFriends(String friendCircleId);
+
+    /**
+     *判断是否点赞过
+     * @param friendCircleId
+     * @param userId
+     * @return
+     */
+    boolean doILike(String friendCircleId,String userId);
 }

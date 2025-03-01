@@ -4,7 +4,9 @@ import com.alibaba.cloud.commons.lang.StringUtils;
 import com.qingchen.grace.result.GraceJSONResult;
 import com.qingchen.pojo.FriendCircleLiked;
 import com.qingchen.pojo.bo.FriendCircleBO;
+import com.qingchen.pojo.vo.CommentVO;
 import com.qingchen.pojo.vo.FriendCircleVO;
+import com.qingchen.service.CommentService;
 import com.qingchen.service.FriendCircleService;
 import com.qingchen.utils.PagedGridResult;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +23,8 @@ import static com.qingchen.base.BaseInfoProperties.HEADER_USER_ID;
 public class FriendCircleController {
     @Autowired
     private FriendCircleService friendCircleService;
+    @Autowired
+    private CommentService commentService;
     @PostMapping("publish")
     public GraceJSONResult publish(@RequestBody FriendCircleBO friendCircleBO, HttpServletRequest request){
         String userId=request.getHeader(HEADER_USER_ID);
@@ -41,7 +45,11 @@ public class FriendCircleController {
         for (FriendCircleVO f:list){
             String friendCircleId = f.getFriendCircleId();
             List<FriendCircleLiked> likedList=friendCircleService.queryLikedFriends(friendCircleId);
+            boolean res= friendCircleService.doILike(friendCircleId,userId);
             f.setLikedFriends(likedList);
+            f.setDoILike(res);
+            List<CommentVO>commentList=commentService.queryAll(friendCircleId);
+            f.setCommentList(commentList);
         }
         return GraceJSONResult.ok(gridResult);
     }
@@ -57,4 +65,10 @@ public class FriendCircleController {
         friendCircleService.unlike(friendCircleId,userId);
         return GraceJSONResult.ok();
     }
+    @PostMapping("likedFriends")
+    public GraceJSONResult likedFriends(String friendCircleId,HttpServletRequest request){
+        List<FriendCircleLiked> friendCircleLikeds = friendCircleService.queryLikedFriends(friendCircleId);
+        return GraceJSONResult.ok(friendCircleLikeds);
+    }
+
 }
