@@ -19,6 +19,19 @@ public interface CommentService {
      */
 
     public CommentVO createComment(CommentBO commentBO);
+
+    /**
+     * 查询评论
+     * @param friendCircleId
+     * @return
+     */
     public List<CommentVO>queryAll(String friendCircleId);
+    /**
+     * 删除评论
+     * @param commentUserId
+     * @param commentId
+     * @param friendCircleId
+     */
+    public void deleteComment(String commentUserId,String commentId,String friendCircleId);
 
 }

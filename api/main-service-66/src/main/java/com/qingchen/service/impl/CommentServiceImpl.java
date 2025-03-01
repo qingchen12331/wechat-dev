@@ -64,4 +64,13 @@ public class CommentServiceImpl extends BaseInfoProperties implements CommentSer
 
         return commentMapperCustom.queryFriendCircleComments(map);
     }
+    @Transactional
+    @Override
+    public void deleteComment(String commentUserId, String commentId, String friendCircleId) {
+        QueryWrapper queryWrapper = new QueryWrapper<Comment>()
+                .eq("id",commentId)
+                .eq("friend_circle_id",friendCircleId)
+                .eq("comment_user_id",commentUserId);
+        commentMapper.delete(queryWrapper);
+    }
 }

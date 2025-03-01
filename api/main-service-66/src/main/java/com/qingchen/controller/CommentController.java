@@ -37,6 +37,15 @@ public class CommentController {
         return GraceJSONResult.ok(commentVO);
 
     }
+    @PostMapping("delete")
+    public GraceJSONResult delete(String commentUserId,String commentId,String friendCircleId){
+        if(StringUtils.isBlank(commentUserId)||StringUtils.isBlank(commentId)||StringUtils.isBlank(friendCircleId)){
+            return GraceJSONResult.error();
+        }
+        commentService.deleteComment(commentUserId,commentId,friendCircleId);
+        return GraceJSONResult.ok();
+    }
+
 
 
 }

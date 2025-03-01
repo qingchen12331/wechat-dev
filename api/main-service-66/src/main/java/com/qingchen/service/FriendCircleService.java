@@ -52,4 +52,10 @@ public interface FriendCircleService {
      * @return
      */
     boolean doILike(String friendCircleId,String userId);
+
+    /**
+     * 删除朋友圈
+     * @param friendCircleId
+     */
+    void delete(String friendCircleId,String userId);
 }

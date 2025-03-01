@@ -70,5 +70,14 @@ public class FriendCircleController {
         List<FriendCircleLiked> friendCircleLikeds = friendCircleService.queryLikedFriends(friendCircleId);
         return GraceJSONResult.ok(friendCircleLikeds);
     }
+    @PostMapping("delete")
+    public GraceJSONResult delete(String friendCircleId,HttpServletRequest request){
+        if(StringUtils.isBlank(friendCircleId)){
+            return GraceJSONResult.error();
+        }
+        String userId=request.getHeader(HEADER_USER_ID);
+        friendCircleService.delete(friendCircleId,userId);
+        return GraceJSONResult.ok();
+    }
 
 }
