@@ -1,4 +1,4 @@
-package com.qingchen.netty;
+package com.qingchen.netty.http;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

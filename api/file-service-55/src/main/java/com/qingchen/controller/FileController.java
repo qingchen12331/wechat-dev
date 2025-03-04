@@ -173,6 +173,34 @@ public class FileController {
         return GraceJSONResult.ok(imageUrl);
     }
 
+    @PostMapping("uploadChatPhoto")
+    public GraceJSONResult uploadChatPhoto(@RequestParam("file")MultipartFile file,
+                                                   String userId) throws Exception {
+
+        if(StringUtils.isBlank(userId)){
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
+
+        }
+
+        String filename=file.getOriginalFilename();
+        if(StringUtils.isBlank(filename)){
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_FAILD);
+        }
+        filename="chat"+"/"+userId+"/"+"photo"+"/"+dealWithoutFilename(filename);
+        String imageUrl =MinIOUtils.uploadFile(MinIOConfig.getBucketName(),filename,file.getInputStream(),true);
+//        String faceUrl=MinIOConfig.getFileHost()+"/"+MinIOConfig.getBucketName()+"/"+filename;
+        /**
+         * 微服务远程调用更新用户头像
+         * 如果前端没有保存按钮可以这么做,如果有保存提交按钮,则在前端可以触发
+         *
+         */
+//        GraceJSONResult jsonResult = userInfoMicroServiceFeign.updateChatBg(userId, imageUrl);
+//        Object data = jsonResult.getData();
+//        String json= JsonUtils.objectToJson(data);
+//        UsersVO usersVO = JsonUtils.jsonToPojo(json, UsersVO.class);
+        return GraceJSONResult.ok(imageUrl);
+    }
+
 
 
 

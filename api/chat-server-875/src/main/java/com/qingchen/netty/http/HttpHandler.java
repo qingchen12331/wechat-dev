@@ -1,4 +1,4 @@
-package com.qingchen.netty;
+package com.qingchen.netty.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
